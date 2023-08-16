@@ -11,11 +11,7 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [matchPassword,setMatchPassword]=useState(false);
-  const logoutHandler=()=>{
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    console.log(localStorage.getItem("token"));
-  }
+ 
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -118,7 +114,7 @@ const AuthForm = () => {
           </button>
         </div>
       </form>
-      <button onClick={logoutHandler}>logout</button>
+    
     </section>
   );
 };
