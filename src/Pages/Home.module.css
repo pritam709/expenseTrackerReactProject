@@ -1,0 +1,47 @@
+.header{
+    display:flex;
+    justify-content:space-between;
+    padding:1.5rem;
+
+}
+.outer{
+    margin:2rem;
+    position:absolute;
+    right:0;
+    padding-bottom:1rem;
+    border-bottom:1px solid black;
+    /* max-width:65%; */
+}
+.contact{
+    /* display:flex;
+    justify-content:space-between; */
+}
+.contact h2{
+    display:inline;
+
+}
+.contact button{
+    background:none;
+   position:absolute;
+   right:0;
+    color:red;
+    border :2px solid red;
+    border-radius:7px;
+    
+}
+
+.form label{
+    margin-right:2rem;
+}
+
+.form input{
+    width:17rem;
+}
+.form button{
+    background-color:#dba167;
+    color:white;
+    border:none;
+    border-radius:7px;
+    padding:5px;
+    margin-top:1.5rem;
+}

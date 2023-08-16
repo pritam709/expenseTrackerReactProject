@@ -11,6 +11,10 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [matchPassword,setMatchPassword]=useState(false);
+  const logoutHandler=()=>{
+    localStorage.removeItem("token");
+    console.log(localStorage.getItem("token"));
+  }
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -67,7 +71,7 @@ const AuthForm = () => {
         localStorage.setItem("token",token);
         history.replace("/home")
         // console.log(data);
-        window.location.reload();
+        // window.location.reload();
     console.log("signed up successfully");
       })
       .catch((err) => {
@@ -112,6 +116,7 @@ const AuthForm = () => {
           </button>
         </div>
       </form>
+      <button onClick={logoutHandler}>logout</button>
     </section>
   );
 };
