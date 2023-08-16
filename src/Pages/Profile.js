@@ -2,8 +2,10 @@ import React, { useRef, useState ,useEffect} from "react";
 import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
 const Profile = () => {
+   
     const [name, setName] = useState("");
   const [img, setImg] = useState("");
+  const [sent,SetSent]=useState(false);
     useEffect(()=>{
 
         const userDetail=async()=>{
@@ -67,6 +69,21 @@ const Profile = () => {
         
       });
   };
+
+  const verifyEmailHandler=()=>{
+    const token =localStorage.getItem("token")
+    fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",{
+        method:"POST",
+        body:JSON.stringify({
+            idToken:token,
+            requestType:"VERIFY_EMAIL"
+        })
+
+    }).then(res=>res.json()).then(data=>{
+        console.log(data);
+    SetSent(true);
+})
+  }
   return (
     <>
       <div className={classes.header}>
@@ -100,7 +117,12 @@ const Profile = () => {
           <input defaultValue={img} ref={urlRef} type="text"></input>
           <br></br>
           <button type="submit">Update</button>
+
         </form>
+        <button className={classes.btn} onClick={verifyEmailHandler} >Verify your Email</button>
+
+         {sent && <p>Verification email sent. Check your Email</p>}
+
       </div>
     </>
   );

@@ -44,4 +44,16 @@
     border-radius:7px;
     padding:5px;
     margin-top:1.5rem;
+    cursor:pointer;
+}
+.btn{
+    background-color:#dba167;
+    color:white;
+    border:none;
+    border-radius:7px;
+    padding:8px;
+    margin-top:1.5rem;
+    font-size:1rem;
+    cursor:pointer;
+
 }
