@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
-
+import { useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
+   const history= useHistory();
   const mailInputRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -20,11 +21,12 @@ const AuthForm = () => {
 
     const eneterdEmail = mailInputRef.current.value;
     const eneterdPassword = passwordRef.current.value;
+   if(!isLogin) {
     const reEneterdPassword = confirmPasswordRef.current.value;
     if(eneterdPassword !== reEneterdPassword){
         setMatchPassword(true);
         return;
-    }
+    }}
     setMatchPassword(false);
     setIsLoading(true);
     let url;
@@ -60,7 +62,12 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
+        const token= data.idToken;
+        console.log(data.idToken);
+        localStorage.setItem("token",token);
+        history.replace("/home")
         // console.log(data);
+        window.location.reload();
     console.log("signed up successfully");
       })
       .catch((err) => {
@@ -81,7 +88,7 @@ const AuthForm = () => {
           <label htmlFor="password">Your Password</label>
           <input ref={passwordRef} type="password" id="password" required />
         </div>
-        <div className={classes.control}>
+        { !isLogin && <div className={classes.control}>
           <label htmlFor="password">Confirm Password</label>
           <input
             ref={confirmPasswordRef}
@@ -90,7 +97,7 @@ const AuthForm = () => {
             required
           />
           {matchPassword && <p>passwords did not match</p>}
-        </div>
+        </div>}
         <div className={classes.actions}>
           {!isLoading && (
             <button>{isLogin ? "Login" : "Create Account"}</button>
