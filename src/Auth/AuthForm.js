@@ -13,6 +13,7 @@ const AuthForm = () => {
   const [matchPassword,setMatchPassword]=useState(false);
   const logoutHandler=()=>{
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
     console.log(localStorage.getItem("token"));
   }
 
@@ -69,6 +70,7 @@ const AuthForm = () => {
         const token= data.idToken;
         console.log(data.idToken);
         localStorage.setItem("token",token);
+        localStorage.setItem("email",data.email)
         history.replace("/home")
         // console.log(data);
         // window.location.reload();
