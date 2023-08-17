@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
@@ -100,6 +100,7 @@ const AuthForm = () => {
           />
           {matchPassword && <p>passwords did not match</p>}
         </div>}
+    {isLogin && <div className={classes.actions}><Link to="/forgotpassword"><button className={classes.toggle}>Forgot Password? </button></Link></div>}
         <div className={classes.actions}>
           {!isLoading && (
             <button>{isLogin ? "Login" : "Create Account"}</button>

@@ -5,6 +5,7 @@ import {Route,Switch,Redirect} from "react-router-dom"
 import Login from './Pages/Login';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
+import ForgotPassword from './Pages/ForgotPassword';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
       </Route>
       <Route path="/profile" >
         <Profile/>
+      </Route>
+      <Route path="/forgotpassword" >
+        <ForgotPassword/>
       </Route>
       <Route path="*">
         <Redirect to="/"></Redirect>
