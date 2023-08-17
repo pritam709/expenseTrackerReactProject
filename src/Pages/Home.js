@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
+import ExpenseForm from "../components/ExpenseForm";
+import Expenses from "../components/Expenses";
 const Home = () => {
+  const[expenses,setExpenses]=  useState([])
   const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     console.log(localStorage.getItem("token"));
   };
+
+  const addExpenseHandler=(obj)=>{
+    console.log(obj);
+        setExpenses(prevState=>{
+        return [...prevState,obj]
+    })
+  }
   return (
     <>
     <Link to="/">
@@ -25,7 +35,10 @@ const Home = () => {
         </span>
       </div>
       <hr></hr>
+      <ExpenseForm onSaveExpenseData={addExpenseHandler} />
+      <Expenses items={expenses} />
     </>
+   
   );
 };
 export default Home;
