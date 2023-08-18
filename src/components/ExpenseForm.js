@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import classes from './ExpenseForm.module.css';
 
@@ -7,6 +7,14 @@ const ExpenseForm = (props) => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+
+  useEffect(()=>{
+    const itemObj= props.onEdit;
+    console.log(itemObj);
+    // setAmount(props.onEdit.amount);
+    // setDescription(props.onEdit.description);
+    // setCategory(props.onEdit.category);
+  },[])
   
 
   const amountChangeHandler = (event) => {
@@ -63,11 +71,11 @@ const ExpenseForm = (props) => {
         <div className={classes['new-expense__control']}>
           <label>Category</label>
           <select
-            
            
             value={category}
             onChange={categoryChangeHandler}
           >
+          <option>select one...</option>
             <option>Food</option>
             <option>Travel</option>
             <option>Fuel</option>

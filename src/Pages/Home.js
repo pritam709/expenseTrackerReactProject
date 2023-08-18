@@ -5,26 +5,28 @@ import ExpenseForm from "../components/ExpenseForm";
 import Expenses from "../components/Expenses";
 const Home = () => {
   const [expenses, setExpenses] = useState([]);
+  const [editExpense,setEditExpense]=useState({
+    amount:"",
+    description:"",
+    category:"",
+  });
   useEffect(() => {
     const getExpense = async () => {
       const response = await fetch(
         "https://expensetracker-d0652-default-rtdb.firebaseio.com/expense.json"
       );
 
-      const resData =await response.json();
+      const resData = await response.json();
       console.log(resData);
-      const fetchResult=[];
-      for(let key in resData){
-        fetchResult.unshift(
-            {
-                ...resData[key],
-                id:key
-            }
-        )
+      const fetchResult = [];
+      for (let key in resData) {
+        fetchResult.unshift({
+          ...resData[key],
+          id: key,
+        });
       }
       console.log(fetchResult);
       setExpenses(fetchResult);
-     
     };
     getExpense();
   }, []);
@@ -38,8 +40,9 @@ const Home = () => {
   const addExpenseHandler = (obj) => {
     console.log(obj);
     setExpenses((prevState) => {
-      return [...prevState, obj];
+      return {...prevState, obj};
     });
+
     fetch(
       "https://expensetracker-d0652-default-rtdb.firebaseio.com/expense.json",
       {
@@ -52,6 +55,36 @@ const Home = () => {
     )
       .then((res) => res.json())
       .then((data) => console.log(data));
+  };
+  const deleteExpenseHandler = (id) => {
+    fetch(
+      "https://expensetracker-d0652-default-rtdb.firebaseio.com/expense/" +
+        id +
+        ".json",
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      console.log(res);
+
+      const newExpense = expenses.filter((item) => item.id !== id);
+      console.log(newExpense);
+      setExpenses(newExpense);
+    });
+  };
+
+  const editExpenseHandler = (id) => {
+
+    const item= expenses.find(item=>item.id===id);
+    console.log(item);
+    console.log(editExpense);
+    setEditExpense(prevState=>{
+      return {...prevState,
+        amount:item.amount,
+      description:item.description,
+    category:item.category};
+    });
+    console.log(editExpense);
   };
   return (
     <>
@@ -70,8 +103,12 @@ const Home = () => {
         </span>
       </div>
       <hr></hr>
-      <ExpenseForm onSaveExpenseData={addExpenseHandler} />
-      <Expenses items={expenses} />
+      <ExpenseForm onSaveExpenseData={addExpenseHandler} onEdit={editExpense}/>
+      <Expenses
+        items={expenses}
+        onDelete={deleteExpenseHandler}
+        onEdit={editExpenseHandler}
+      />
     </>
   );
 };
