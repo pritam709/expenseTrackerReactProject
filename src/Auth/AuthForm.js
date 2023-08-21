@@ -1,8 +1,11 @@
 import React, { useState, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth";
 
 const AuthForm = () => {
+  const dispatch=useDispatch();
    const history= useHistory();
   const mailInputRef = useRef();
   const passwordRef = useRef();
@@ -64,9 +67,10 @@ const AuthForm = () => {
       })
       .then((data) => {
         const token= data.idToken;
-        console.log(data.idToken);
-        localStorage.setItem("token",token);
-        localStorage.setItem("email",data.email)
+        dispatch(authActions.login(token))
+        // console.log(data.idToken);
+        // localStorage.setItem("token",token);
+        // localStorage.setItem("email",data.email)
         history.replace("/home")
         // console.log(data);
         // window.location.reload();

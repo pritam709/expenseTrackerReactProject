@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 
 import classes from './ExpenseForm.module.css';
 
@@ -8,13 +8,13 @@ const ExpenseForm = (props) => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
 
-  useEffect(()=>{
-    const itemObj= props.onEdit;
-    console.log(itemObj);
-    // setAmount(props.onEdit.amount);
-    // setDescription(props.onEdit.description);
-    // setCategory(props.onEdit.category);
-  },[])
+  // useEffect(()=>{
+  //   const itemObj= props.onEdit;
+  //   console.log(itemObj);
+  //   // setAmount(props.onEdit.amount);
+  //   // setDescription(props.onEdit.description);
+  //   // setCategory(props.onEdit.category);
+  // },[])
   
 
   const amountChangeHandler = (event) => {

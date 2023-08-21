@@ -3,13 +3,16 @@ import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import Expenses from "../components/Expenses";
+import { authActions } from "../store/auth";
+import { useDispatch } from "react-redux";
 const Home = () => {
+  const dispatch= useDispatch();
   const [expenses, setExpenses] = useState([]);
-  const [editExpense,setEditExpense]=useState({
-    amount:"",
-    description:"",
-    category:"",
-  });
+  // const [editExpense,setEditExpense]=useState({
+  //   amount:"",
+  //   description:"",
+  //   category:"",
+  // });
   useEffect(() => {
     const getExpense = async () => {
       const response = await fetch(
@@ -32,15 +35,18 @@ const Home = () => {
   }, []);
 
   const logoutHandler = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    console.log(localStorage.getItem("token"));
+
+    dispatch(authActions.logout());
+
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("email");
+    // console.log(localStorage.getItem("token"));
   };
 
   const addExpenseHandler = (obj) => {
     console.log(obj);
     setExpenses((prevState) => {
-      return {...prevState, obj};
+      return [...prevState, obj];
     });
 
     fetch(
@@ -75,16 +81,16 @@ const Home = () => {
 
   const editExpenseHandler = (id) => {
 
-    const item= expenses.find(item=>item.id===id);
-    console.log(item);
-    console.log(editExpense);
-    setEditExpense(prevState=>{
-      return {...prevState,
-        amount:item.amount,
-      description:item.description,
-    category:item.category};
-    });
-    console.log(editExpense);
+    // const item= expenses.find(item=>item.id===id);
+    // console.log(item);
+    // console.log(editExpense);
+    // setEditExpense(prevState=>{
+    //   return {...prevState,
+    //     amount:item.amount,
+    //   description:item.description,
+    // category:item.category};
+    // });
+    // console.log(editExpense);
   };
   return (
     <>
@@ -103,7 +109,7 @@ const Home = () => {
         </span>
       </div>
       <hr></hr>
-      <ExpenseForm onSaveExpenseData={addExpenseHandler} onEdit={editExpense}/>
+      <ExpenseForm onSaveExpenseData={addExpenseHandler} />
       <Expenses
         items={expenses}
         onDelete={deleteExpenseHandler}

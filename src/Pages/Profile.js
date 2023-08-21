@@ -1,7 +1,9 @@
 import React, { useRef, useState ,useEffect} from "react";
 import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
+import {  useSelector } from "react-redux/es/hooks/useSelector";
 const Profile = () => {
+ const token= useSelector(state=>state.token);
    
     const [name, setName] = useState("");
   const [img, setImg] = useState("");
@@ -10,7 +12,7 @@ const Profile = () => {
 
         const userDetail=async()=>{
             // const email= localStorage.getItem("email")
-            const token =localStorage.getItem("token")
+            // const token =localStorage.getItem("token")
             fetch(
                 "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",
                 {
@@ -35,7 +37,7 @@ const Profile = () => {
 
         userDetail();
 
-    },[name])
+    },[name,token])
   
   const nameRef = useRef();
   const urlRef = useRef();
@@ -45,7 +47,7 @@ const Profile = () => {
 
     const name = nameRef.current.value;
     const photoUrl = urlRef.current.value;
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     // const email= localStorage.getItem("email");
 
     fetch(
@@ -71,7 +73,7 @@ const Profile = () => {
   };
 
   const verifyEmailHandler=()=>{
-    const token =localStorage.getItem("token")
+    // const token =localStorage.getItem("token")
     fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",{
         method:"POST",
         body:JSON.stringify({
