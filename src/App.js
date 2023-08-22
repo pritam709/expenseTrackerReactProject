@@ -9,9 +9,11 @@ import ForgotPassword from './Pages/ForgotPassword';
 import {  useSelector } from 'react-redux/es/hooks/useSelector';
 
 function App() {
-  const isAuthenticated= useSelector(state=>state.auth.isAuthenticated)
+  const isAuthenticated= useSelector(state=>state.auth.isAuthenticated);
+  const theme= useSelector(state=>state.theme.theme)
   return (
-    <Switch>
+   <div className={theme}>
+     <Switch>
       <Route path="/" exact >
         <Login/>
       </Route>
@@ -29,6 +31,7 @@ function App() {
 
         </Route>
     </Switch>
+   </div>
   );
 }
 

@@ -7,9 +7,15 @@ import { authActions } from "../store/auth";
 import { useDispatch, useSelector } from "react-redux";
 // import expense from "../store/expense";
 import { expenseActions } from "../store/expense";
+import {themeActions }from "../store/theme";
 const Home = () => {
   const expenses= useSelector(state=>state.expenses.expenseList);
-  console.log(expenses);
+  const totalExpense = expenses.reduce((curr,item)=>{
+  
+    return curr+item.amount;
+  },0)
+  console.log(totalExpense);
+  // console.log(expenses);
   const dispatch= useDispatch();
   // const [expenses, setExpenses] = useState([]);
  
@@ -65,6 +71,12 @@ const Home = () => {
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
+
+  const changeThemeHandler=()=>{
+
+    dispatch(themeActions.changeTheme())
+
+  }
   
 
   return (
@@ -84,6 +96,8 @@ const Home = () => {
         </span>
       </div>
       <hr></hr>
+      {totalExpense>10000 ? <button className={classes.primiumBtn} onClick={changeThemeHandler}>Activate Premium</button> : null}
+
       <ExpenseForm onSaveExpenseData={addExpenseHandler} />
       <Expenses
         items={expenses}
