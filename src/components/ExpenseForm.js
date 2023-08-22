@@ -1,19 +1,28 @@
 import React, {  useState } from 'react';
 
 import classes from './ExpenseForm.module.css';
+import { useSelector } from 'react-redux';
 
 const ExpenseForm = (props) => {
- 
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
 
+ const editExpense= useSelector(state=>state.expenses.editExpense);
+ if(editExpense){
+  setAmount(editExpense.amount);
+  setCategory(editExpense.category);
+  setDescription(editExpense.description);
+
+ }
+ 
+  
   // useEffect(()=>{
   //   const itemObj= props.onEdit;
   //   console.log(itemObj);
-  //   // setAmount(props.onEdit.amount);
-  //   // setDescription(props.onEdit.description);
-  //   // setCategory(props.onEdit.category);
+    // setAmount(props.onEdit.amount);
+    // setDescription(props.onEdit.description);
+    // setCategory(props.onEdit.category);
   // },[])
   
 

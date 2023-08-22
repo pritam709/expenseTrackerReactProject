@@ -9,7 +9,7 @@ import ForgotPassword from './Pages/ForgotPassword';
 import {  useSelector } from 'react-redux/es/hooks/useSelector';
 
 function App() {
-  const isAuthenticated= useSelector(state=>state.isAuthenticated)
+  const isAuthenticated= useSelector(state=>state.auth.isAuthenticated)
   return (
     <Switch>
       <Route path="/" exact >

@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import Expenses from "../components/Expenses";
 import { authActions } from "../store/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+// import expense from "../store/expense";
+import { expenseActions } from "../store/expense";
 const Home = () => {
+  const expenses= useSelector(state=>state.expenses.expenseList);
+  console.log(expenses);
   const dispatch= useDispatch();
-  const [expenses, setExpenses] = useState([]);
-  // const [editExpense,setEditExpense]=useState({
-  //   amount:"",
-  //   description:"",
-  //   category:"",
-  // });
+  // const [expenses, setExpenses] = useState([]);
+ 
   useEffect(() => {
     const getExpense = async () => {
       const response = await fetch(
@@ -20,7 +20,7 @@ const Home = () => {
       );
 
       const resData = await response.json();
-      console.log(resData);
+      // console.log(resData);
       const fetchResult = [];
       for (let key in resData) {
         fetchResult.unshift({
@@ -28,8 +28,9 @@ const Home = () => {
           id: key,
         });
       }
-      console.log(fetchResult);
-      setExpenses(fetchResult);
+      // console.log(fetchResult);
+      dispatch(expenseActions.onRestoreExpenses(fetchResult));
+      // setExpenses(fetchResult);
     };
     getExpense();
   }, []);
@@ -45,9 +46,11 @@ const Home = () => {
 
   const addExpenseHandler = (obj) => {
     console.log(obj);
-    setExpenses((prevState) => {
-      return [...prevState, obj];
-    });
+    // setExpenses((prevState) => {
+    //   return [...prevState, obj];
+    // });
+
+    dispatch(expenseActions.addExpense(obj));
 
     fetch(
       "https://expensetracker-d0652-default-rtdb.firebaseio.com/expense.json",
@@ -62,36 +65,8 @@ const Home = () => {
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
-  const deleteExpenseHandler = (id) => {
-    fetch(
-      "https://expensetracker-d0652-default-rtdb.firebaseio.com/expense/" +
-        id +
-        ".json",
-      {
-        method: "DELETE",
-      }
-    ).then((res) => {
-      console.log(res);
+  
 
-      const newExpense = expenses.filter((item) => item.id !== id);
-      console.log(newExpense);
-      setExpenses(newExpense);
-    });
-  };
-
-  const editExpenseHandler = (id) => {
-
-    // const item= expenses.find(item=>item.id===id);
-    // console.log(item);
-    // console.log(editExpense);
-    // setEditExpense(prevState=>{
-    //   return {...prevState,
-    //     amount:item.amount,
-    //   description:item.description,
-    // category:item.category};
-    // });
-    // console.log(editExpense);
-  };
   return (
     <>
       <Link to="/">
@@ -112,8 +87,8 @@ const Home = () => {
       <ExpenseForm onSaveExpenseData={addExpenseHandler} />
       <Expenses
         items={expenses}
-        onDelete={deleteExpenseHandler}
-        onEdit={editExpenseHandler}
+      
+       
       />
     </>
   );
