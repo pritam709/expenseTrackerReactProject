@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 // import expense from "../store/expense";
 import { expenseActions } from "../store/expense";
 import {themeActions }from "../store/theme";
+import Papa from "papaparse";
+import { saveAs } from "file-saver";
 const Home = () => {
+  const [features, setFeatures] = useState(false);
   const expenses= useSelector(state=>state.expenses.expenseList);
   const totalExpense = expenses.reduce((curr,item)=>{
   
@@ -77,6 +80,34 @@ const Home = () => {
     dispatch(themeActions.changeTheme())
 
   }
+
+  const dowloadExpenseExcelHandler = () => {
+    // Convert data to CSV format
+    const data = [];
+    expenses.forEach((val) => {
+      const ExpenseAmount = val.amount;
+      
+      const Category = val.category;
+      const Description = val.description;
+
+      data.push({ ExpenseAmount, Category, Description });
+    });
+    console.log("data", data);
+    const csv = Papa.unparse(data);
+
+    // Convert CSV data into a Blob
+    const csvBlob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+
+    // Save the CSV file using FileSaver
+    saveAs(csvBlob, "Expensedata.csv");
+
+    // setActivePremium(false);
+  };
+  const showFeatures=()=>{
+
+    setFeatures(true);
+
+  }
   
 
   return (
@@ -96,7 +127,9 @@ const Home = () => {
         </span>
       </div>
       <hr></hr>
-      {totalExpense>10000 ? <button className={classes.primiumBtn} onClick={changeThemeHandler}>Activate Premium</button> : null}
+      {totalExpense>10000 ? <div><button className={classes.primiumBtn} onClick={showFeatures}>Activte Premium</button> </div> : null}
+
+      {(totalExpense>10000 && features) ? <div><button className={classes.primiumBtn} onClick={changeThemeHandler}>change Theme</button> <button  className={classes.primiumBtn} onClick={dowloadExpenseExcelHandler}>Download Expenses</button></div> : null}
 
       <ExpenseForm onSaveExpenseData={addExpenseHandler} />
       <Expenses
