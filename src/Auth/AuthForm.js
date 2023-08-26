@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth";
 
 const AuthForm = () => {
+ 
   const dispatch=useDispatch();
    const history= useHistory();
   const mailInputRef = useRef();
@@ -66,14 +67,16 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        const token= data.idToken;
-        dispatch(authActions.login(token))
-        // console.log(data.idToken);
-        // localStorage.setItem("token",token);
-        // localStorage.setItem("email",data.email)
+        console.log(data);
+        const user={
+          token:data.idToken,
+         userId:data.localId,
+        }
+       
+        dispatch(authActions.login(user))
+       
         history.replace("/home")
-        // console.log(data);
-        // window.location.reload();
+      
     console.log("signed up successfully");
       })
       .catch((err) => {

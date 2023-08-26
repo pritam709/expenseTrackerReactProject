@@ -1,44 +1,43 @@
-import React, { useRef, useState ,useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import classes from "./Home.module.css";
 import { Link } from "react-router-dom";
-import {  useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 const Profile = () => {
- const token= useSelector(state=>state.token);
-   
-    const [name, setName] = useState("");
+  const token = useSelector((state) => state.auth.token);
+
+  const [name, setName] = useState("");
   const [img, setImg] = useState("");
-  const [sent,SetSent]=useState(false);
-    useEffect(()=>{
-
-        const userDetail=async()=>{
-            // const email= localStorage.getItem("email")
-            // const token =localStorage.getItem("token")
-            fetch(
-                "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    idToken: token,
-                  }),
-                }
-              )
-                .then((res) => res.json())
-                .then((data) => {
-                  console.log(data.users);
-                  const users= data.users;
-                  setName(users[0].displayName);
-                          setImg(users[0].photoUrl);
-                
-              });
+  const [sent, SetSent] = useState(false);
+  useEffect(() => {
+    const userDetail = async () => {
+      // const email= localStorage.getItem("email")
+      // const token =localStorage.getItem("token")
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken: token,
+          }),
         }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.users);
+          const users = data.users;
+          if (users) {
+            setName(users[0].displayName);
+            setImg(users[0].photoUrl);
+          }
+        });
+    };
 
-        userDetail();
+    userDetail();
+  }, [name, token]);
 
-    },[name,token])
-  
   const nameRef = useRef();
   const urlRef = useRef();
 
@@ -68,24 +67,27 @@ const Profile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        
       });
   };
 
-  const verifyEmailHandler=()=>{
+  const verifyEmailHandler = () => {
     // const token =localStorage.getItem("token")
-    fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",{
-        method:"POST",
-        body:JSON.stringify({
-            idToken:token,
-            requestType:"VERIFY_EMAIL"
-        })
-
-    }).then(res=>res.json()).then(data=>{
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAQMsUvpW0VDlrT8udsQOqk9uN4im3NOJA",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: token,
+          requestType: "VERIFY_EMAIL",
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data);
-    SetSent(true);
-})
-  }
+        SetSent(true);
+      });
+  };
   return (
     <>
       <div className={classes.header}>
@@ -119,12 +121,12 @@ const Profile = () => {
           <input defaultValue={img} ref={urlRef} type="text"></input>
           <br></br>
           <button type="submit">Update</button>
-
         </form>
-        <button className={classes.btn} onClick={verifyEmailHandler} >Verify your Email</button>
+        <button className={classes.btn} onClick={verifyEmailHandler}>
+          Verify your Email
+        </button>
 
-         {sent && <p>Verification email sent. Check your Email</p>}
-
+        {sent && <p>Verification email sent. Check your Email</p>}
       </div>
     </>
   );

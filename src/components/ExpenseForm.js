@@ -17,14 +17,7 @@ const ExpenseForm = (props) => {
  }
  
   
-  // useEffect(()=>{
-  //   const itemObj= props.onEdit;
-  //   console.log(itemObj);
-    // setAmount(props.onEdit.amount);
-    // setDescription(props.onEdit.description);
-    // setCategory(props.onEdit.category);
-  // },[])
-  
+ 
 
   const amountChangeHandler = (event) => {
     const updatedAmt=+event.target.value
@@ -94,7 +87,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className={classes['new-expense__actions']}>
-        {/* <button type="button" onClick={props.onCancel}>Cancel</button> */}
+    
         <button type='submit'>Add Expense</button>
       </div>
     </form>

@@ -36,7 +36,7 @@ const Expenses =(props)=>{
         //   dispatch(expenseActions.editExpense(item))
         //   dispatch(expenseActions.removeExpense(item))
         // });
-
+    console.log(item);
 
        
     }
